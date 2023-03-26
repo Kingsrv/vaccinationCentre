@@ -13,3 +13,38 @@ spring:
 
   application:
     name: VACCINATION-CENTRE-SERVICE
+
+#configuration for circitbreaker
+
+management:
+  health:
+    circuitbreakers:
+      enabled: true
+
+  endpoints:
+    web:
+      exposure:
+        include:
+          - health
+
+  endpoint:
+    health:
+      show-details: always
+
+  server:
+    port: 9093
+
+resilience4j:
+  circuitbreaker:
+    instances:
+      citizenService:
+        registerHealthIndicator: true
+        eventConsumerBufferSize: 10
+        failureRateThreshold: 50
+        minimumNumberOfCalls: 5
+        automaticTransitionFromOpenToHalfOpenEnabled: true
+        waitDurationInOpenState: 5s
+        permittedNumberOfCallsInHalfOpenState: 3
+        slidingWindowSize: 10
+        slidingWindowType: COUNT_BASED
+

@@ -1,0 +1,76 @@
+url - http://localhost:9093/actuator/health
+
+{
+    "status": "UP",
+    "components": {
+        "circuitBreakers": {
+            "status": "UP",
+            "details": {
+                "citizenService": {
+                    "status": "UP",
+                    "details": {
+                        "failureRate": "-1.0%",
+                        "failureRateThreshold": "50.0%",
+                        "slowCallRate": "-1.0%",
+                        "slowCallRateThreshold": "100.0%",
+                        "bufferedCalls": 0,
+                        "slowCalls": 0,
+                        "slowFailedCalls": 0,
+                        "failedCalls": 0,
+                        "notPermittedCalls": 0,
+                        "state": "CLOSED"
+                    }
+                }
+            }
+        },
+        "db": {
+            "status": "UP",
+            "details": {
+                "database": "MySQL",
+                "validationQuery": "isValid()"
+            }
+        },
+        "discoveryComposite": {
+            "status": "UP",
+            "components": {
+                "discoveryClient": {
+                    "status": "UP",
+                    "details": {
+                        "services": [
+                            "api_gateway",
+                            "vaccination-centre-service",
+                            "citizen-service"
+                        ]
+                    }
+                },
+                "eureka": {
+                    "description": "Remote status from Eureka server",
+                    "status": "UP",
+                    "details": {
+                        "applications": {
+                            "CITIZEN-SERVICE": 1,
+                            "API_GATEWAY": 1,
+                            "VACCINATION-CENTRE-SERVICE": 1
+                        }
+                    }
+                }
+            }
+        },
+        "diskSpace": {
+            "status": "UP",
+            "details": {
+                "total": 162034348032,
+                "free": 114366640128,
+                "threshold": 10485760,
+                "path": "D:\\microserviceProject\\AarogyaSetuProject\\vaccinationCentre\\vaccinationCentre\\.",
+                "exists": true
+            }
+        },
+        "ping": {
+            "status": "UP"
+        },
+        "refreshScope": {
+            "status": "UP"
+        }
+    }
+}

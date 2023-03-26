@@ -1,9 +1,9 @@
 package com.srv.vaccinationCentre.controller;
 
-import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import com.srv.vaccinationCentre.entity.RequiredResponse;
 import com.srv.vaccinationCentre.entity.VaccinationCentre;
 import com.srv.vaccinationCentre.service.VaccinationCentreService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +28,8 @@ public class VaccinationCentreController {
         return new ResponseEntity<>(vaccinationCentre, HttpStatus.OK);
     }
 
-    @HystrixCommand(fallbackMethod = "handleCitizenDownTime")
-    @RequestMapping(path = "/id/{id}", method = RequestMethod.GET)
+    @GetMapping(path = "/id/{id}")
+    @CircuitBreaker(name = "citizenService", fallbackMethod = "handleCitizenDownTime")
     public ResponseEntity<RequiredResponse> getAllDataByCentreId(@PathVariable Integer id){
 
         RequiredResponse requiredResponse = new RequiredResponse();
@@ -53,7 +53,7 @@ public class VaccinationCentreController {
         return new ResponseEntity<>(requiredResponse, HttpStatus.OK);
     }
 
-    public ResponseEntity<RequiredResponse> handleCitizenDownTime(@PathVariable Integer id){
+    public ResponseEntity<RequiredResponse> handleCitizenDownTime(Integer id, Exception e){
         RequiredResponse requiredResponse = new RequiredResponse();
         VaccinationCentre vaccinationCentreName = vaccinationCentreService.findById(id).get();
         requiredResponse.setCentre(vaccinationCentreName);
